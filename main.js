@@ -4,7 +4,6 @@ class Task {
     this.title = title;
     this.description = description;
     this.completed = completed;
-    this.subTasks = [];  // Add this line
   }
 }
 
@@ -23,51 +22,47 @@ class TaskManager {
 
   async fetchTasksFromAPI() {
     try {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/todos?_limit=10"
-      );
+      const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10');
       if (!response.ok) {
-        throw new Error("Network response was not ok.");
+        throw new Error('Network response was not ok.');
       }
       const tasksFromAPI = await response.json();
-      this.tasks = tasksFromAPI.map((task) => ({
+      this.tasks = tasksFromAPI.map(task => ({
         id: task.id,
         title: task.title,
-        description: task.description || "",
+        description: task.description || '',
         completed: task.completed,
         parentId: task.parentId || null,
       }));
       this.updateTaskList();
     } catch (error) {
-      console.error("Error fetching tasks:", error);
+      console.error('Error fetching tasks:', error);
     }
   }
 
   addTask(title, description, isSubTask, parentTaskId) {
     const newTask = isSubTask
-      ? new SubTask(
-          this.tasks.length + 1,
-          title,
-          description || "",
-          false,
-          parentTaskId
+        ? new SubTask(
+            this.tasks.length + 1,
+            title,
+            description || '',
+            false,
+            parentTaskId
         )
-      : new Task(this.tasks.length + 1, title, description || "", false);
+        : new Task(
+            this.tasks.length + 1,
+            title,
+            description || '',
+            false
+        );
 
     if (isSubTask) {
-      const foundTask = this.tasks.find(
-        (task) => task.id === Number(parentTaskId)
-      );
-      if (foundTask) {
-        if(foundTask.subTasks === undefined) {
-          foundTask.subTasks = foundTask.subTasks || [];
-        }
-        console.log("foundTask:", foundTask);
-        
-        foundTask.subTasks.push(newTask);
-        this.tasks.push(newTask);
+      const parentTask = this.tasks.find(task => task.id === parentTaskId);
+      if (parentTask) {
+        parentTask.subTasks = parentTask.subTasks || [];
+        parentTask.subTasks.push(newTask);
       } else {
-        console.error("Parent task not found.");
+        console.error('Parent task not found.');
         return;
       }
     } else {
@@ -83,69 +78,55 @@ class TaskManager {
 
   async markTaskComplete(taskId) {
     try {
-      const task = this.tasks.find((t) => t.id === taskId);
+      const task = this.tasks.find(t => t.id === taskId);
 
       if (task) {
         task.completed = true;
         if (task.subTasks && task.subTasks.length > 0) {
-          task.subTasks.forEach((subTask) => {
+          task.subTasks.forEach(subTask => {
             subTask.completed = true;
           });
         }
         this.updateTaskList();
-        return "Task marked as completed.";
+        return 'Task marked as completed.';
       } else {
-        throw new Error("Task not found.");
+        throw new Error('Task not found.');
       }
     } catch (error) {
-      console.error("Error marking task as complete:", error);
+      console.error('Error marking task as complete:', error);
       throw error;
     }
   }
 
   updateTaskList() {
-    const taskListElement = document.getElementById("taskList");
-    taskListElement.innerHTML = "";
+    const taskListElement = document.getElementById('taskList');
+    taskListElement.innerHTML = '';
 
-    this.tasks.forEach((task) => {
-      const taskElement = document.createElement("div");
-      taskElement.classList.add("taskItem");
+    this.tasks.forEach(task => {
+      const taskElement = document.createElement('div');
+      taskElement.classList.add('taskItem');
 
-      const taskIdElement = document.createElement("span");
+      const taskIdElement = document.createElement('span');
       taskIdElement.textContent = `ID: ${task.id} - `;
       taskElement.appendChild(taskIdElement);
 
-      const taskTitleElement = document.createElement("span");
+      const taskTitleElement = document.createElement('span');
       taskTitleElement.textContent = task.title;
 
-      const completeButton = document.createElement("button");
-      completeButton.textContent = "Mark completed";
-      completeButton.classList.add("completeButton");
-      completeButton.addEventListener("click", () =>
-        this.markTaskComplete(task.id)
-      );
+      const completeButton = document.createElement('button');
+      completeButton.textContent = 'Mark completed';
+      completeButton.classList.add('completeButton');
+      completeButton.addEventListener('click', () => this.markTaskComplete(task.id));
 
       taskElement.appendChild(taskTitleElement);
       taskElement.appendChild(completeButton);
 
       if (task.completed) {
-        taskElement.classList.add("completedTask");
+        taskElement.classList.add('completedTask');
         completeButton.disabled = true;
       }
 
       taskListElement.appendChild(taskElement);
-    });
-
-    this.tasks.forEach((task) => {
-      const taskElement = this.createTaskElement(task);
-      taskListElement.appendChild(taskElement);
-
-      if (task.subTasks) {
-        task.subTasks.forEach((subTask) => {
-          const subTaskElement = this.createTaskElement(subTask);
-          taskElement.appendChild(subTaskElement);
-        });
-      }
     });
   }
 }
