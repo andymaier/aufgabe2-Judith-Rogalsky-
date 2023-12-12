@@ -1,0 +1,127 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center; /* Zentriert den Inhalt horizontal */
+  align-items: flex-start; /* Oberer Rand ausrichten */
+  min-height: 100vh;
+  background-color: #F1D5D6;
+}
+
+.headerBar {
+  background-color: #E3A4AE;
+  padding: 15px;
+  text-align: center;
+  color: white;
+  font-size: 24px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.taskItem {
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.completedTask {
+  text-decoration: line-through;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background-color: #E3A4AE;
+  color: white;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #E34A6F;
+}
+
+#taskForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  top: 200px;
+  right: 0px;
+  margin-left: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+#taskForm select {
+  margin-bottom: 10px;
+  width: 100%; /* Füllt die volle Breite des Containers aus */
+  max-width: 300px; /* Maximal zulässige Breite, anpassen nach Bedarf */
+  text-align: left; /* Linksbündige Ausrichtung des Texts */
+}
+#taskForm label,
+#taskForm input,
+#taskForm button {
+  margin-bottom: 10px;
+  width: 300px; /* Ändern Sie die Breite nach Bedarf */
+}
+
+
+.taskList {
+  flex: 2;
+  margin-right: 50px;
+  margin-top: 150px; /* Fügen Sie hier den Abstand zum Header hinzu */
+  list-style: none;
+  padding-left: 50px;
+  padding-top: 50px;
+}
+
+.taskItem {
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.completedTask {
+  text-decoration: line-through;
+}
+
+.subTask {
+  margin-left: 20px; /* Einzug für Subtasks */
+}
+
+.taskDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.taskButtons {
+  display: flex;
+  align-items: center;
+}
+
+.completeButton {
+  cursor: pointer;
+  border: none;
+  background-color: #E3A4AE;
+  color: whiteE;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.completeButton:hover {
+  text-decoration: underline;
+}
